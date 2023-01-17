@@ -6,8 +6,6 @@ import re
 import sys
 import zlib
 
-OUTDIR = '/home/balance/bhp/network_sniffer/pcap_extractor/pics'
-PCAPS = '/home/balance/bhp/network_sniffer/pcap_extractor/pcaps'
 
 Response = collections.namedtuple('Response', ['header', 'payload'])
 
