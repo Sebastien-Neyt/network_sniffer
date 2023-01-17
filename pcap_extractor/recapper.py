@@ -6,6 +6,8 @@ import re
 import sys
 import zlib
 
+#OUTDIR = 'path to location where you want to store the pics'
+#PCAPS = 'path to pcap dir'
 
 Response = collections.namedtuple('Response', ['header', 'payload'])
 
